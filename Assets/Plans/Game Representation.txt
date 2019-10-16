@@ -1,0 +1,22 @@
+[ 
+  [[0, 0, 0], 
+   [0, 0, 0], 
+   [0, 0, 0]], Layer 1
+
+  [[0, 0, 0], 
+   [0, 0, 0], 
+   [0, 0, 0]], Layer 2
+
+  [[0, 0, 0],
+   [0, 0, 0],
+   [0, 0, 0]] Layer 3
+
+]
+
+Win Cases considering new piece at g[x,y,z]
+	x, y, z is corner x 8
+	x, y, z is absolute centre x1
+	x, y, z is bottom and top midrow x 8
+	
+
+000 -> 001, 
