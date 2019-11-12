@@ -18,13 +18,10 @@ Hello
 
 2. Turns: At the start of every game the players are randomly assigned a turn, each player gets one turn every round in that order.
 
-3. Placement: There is gravity in this game. What that means is just like Connect 4 you can not place a piece in the cells of the higher layers unless there is piece in the layers below.
+3. Placement: There is gravity in this game. ![Screenshot](Documentation/Bottom.png) What that means is just like Connect 4 you can not place a piece in the cells of the higher layers unless there is piece in the layers below.
+![Screenshot](Documentation/SecondLayer.png)
 
-Picture of piece in layer 1. Picture of piece in layer 2
-
-4. Winning Lines: Any consecutive line of 3 pieces wins the game. This could be just on the lower layers, through the middle or on one of the side face of the cube.
-
-Picture of a winning layer 1 combo. Picture of a winning across middle combo. Picture of a winning face combo.
+4. Winning Lines: Any consecutive line of 3 pieces wins the game. This could be just on the lower layers,![Screenshot](Documentation/GroundWin.png) through the middle ![Screenshot](Documentation/MiddleWin.png) or on one of the side face of the cube. ![Screenshot](Documentation/FaceWin.png)
 
 
 ## The AI
