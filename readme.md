@@ -18,7 +18,7 @@
 ### Hyperion the Greedy
 ![Screenshot](Documentation/Hyperion.png)
 
-Hyperion has only one goal. **Attack**. The strategy that Hyperion follows disregards any long term blocking of the opponent and impliments a greedy algorithm to attempt to win the game
+Hyperion has only one goal. **Attack**. The strategy that Hyperion follows disregards any long term blocking of the opponent and impliments a greedy algorithm to minimize an aggressive *Heuristic Function* and win the game.
 
 Hyperion Algorithm
 * If there is a move that will win the game, play it.
@@ -26,7 +26,7 @@ Hyperion Algorithm
 * Else calculate the most aggressive move possible, play it.
 
 Calculating the most aggressive move - Hyperion assigns a score to each move and picks the move with the highest score
-Aggression score for each move
+Aggression score for each move i.e The Aggresive Heuristic Function.
 * For each consecutive 3 spots (winning line) that isn't occupied by an opponent do the following
 ++ If after the move only one spot is occupied then add 1
 ++ If 2 spots are occupied then add 4 ( Having 2 in a row in one line should be more than twice as good as having one.
@@ -45,14 +45,11 @@ This means the algorithm has an efficiency of **O(1)** with respect to the numbe
 ### Zenith the Wise
 ![Screenshot](Documentation/Zenith.png)
 
-*Zenith sees all*.The strategy that Zenith follows is to calculate every single possible game that could exist from a particular move and chooses the option that has the most games where Zenith wins
+*Zenith sees all*. Zenith follows a more rounded strategy than its Aggressive counterpart. There are 2 primary differences between the two
+1. Zenith uses a different Heuristic Function. One that not just considers the number of attacks it has available to it, but also the number of attacks the other opponents have available to them. 
+2. Instead of taking a greedy approach Zenith uses the power Deep Learning with ML Agents to minimize the Heuristic Function over the course of the game overall.
 
-Calculating every possible game
-* Zenith uses brute force here, every one of the 27 cells in the cube have 4 possible states - empty, player 1, 2 or 3.
-* Then out of all the games possible, Zenith chooses the moves that has the maximum number of possible games that gives it the win.
 
-This means the algorithm has an efficiency of **O(-n^4)** where n is the number of turns that have already been played. i.e it gets faster as Zenith goes into end game.
-![Screenshot](Documentation/ZenithEfficiency.png)
 
 
 ### 
