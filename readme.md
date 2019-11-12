@@ -27,7 +27,8 @@ Hello
 ## The AI
 
 ### Hyperion the Greedy
-Hyperion has only one goal. Attack. The strategy that Hyperion follows disregards any long term blocking of the opponent and impliments a greedy algorithm to attempt to win the game
+![Screenshot](Documentation/Hyperion.png)
+Hyperion has only one goal. **Attack**. The strategy that Hyperion follows disregards any long term blocking of the opponent and impliments a greedy algorithm to attempt to win the game
 
 Hyperion Algorithm
 * If there is a move that will win the game, play it.
@@ -47,11 +48,20 @@ The strategy results in some clear preferences for Hyperion
 2. Hyperion will almost always occupy the centre position if given the chance as it connects to the most winning lines.
 3. A game with 3 Hyperion players is deterministic, the first player will always win
 
+This means the algorithm has an efficiency of **O(1)** with respect to the number of moves played already.
+![Screenshot](Documentation/HyperionEfficiency.png)
+
+
 ### Zenith the Wise
-Zenith sees all.The strategy that Zenith follows is to calculate every single possible game that could exist from a particular move and chooses the option that has the most games where Zenith wins
+![Screenshot](Documentation/Zenith.png)
+*Zenith sees all*.The strategy that Zenith follows is to calculate every single possible game that could exist from a particular move and chooses the option that has the most games where Zenith wins
 
 Calculating every possible game
-* Zenith uses brute force here, every one of the 27 cells in the cube have 3 possible states - empty, player 1, 2 or 3. 
+* Zenith uses brute force here, every one of the 27 cells in the cube have 4 possible states - empty, player 1, 2 or 3.
+* Then out of all the games possible, Zenith chooses the moves that has the maximum number of possible games that gives it the win.
+
+This means the algorithm has an efficiency of **O(-n^4)** where n is the number of turns that have already been played. i.e it gets faster as Zenith goes into end game.
+![Screenshot](Documentation/ZenithEfficiency.png)
 
 
 ### 
