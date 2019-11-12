@@ -1,0 +1,27 @@
+AI Notes
+
+Current plan is 3 types of AI
+
+1. Hyperion - Max aggression. Hyperion will only try to maximize the chance of getting a winning combination. Will not even try to block the other players etc.
+		Implementation: A greedy algoithm that finds the immediate solution with the highest number of available channels. (Could define available attacks function and score it higher if two out of three are achieved)
+						Or perhaps try to solve for every possible placement of only your pieces and pick the option where you win the most. 
+			
+						Yup im gonna make a separate class for Hyperion with an initial attack score as 0. Then every turn we can hypothetically make all moves 1-9 and see the increase in attack score by local comparison to cell we just placed in and choose randomly between best options
+						as for attack score we can do this. -> first maintain a list of all possible lines of victory as 3 coordinates (45? must be more) 
+																then for a given move, for each line of victory
+																			if the move is on the line +1, 
+																			if you occupy one more on the line already i.e 2 total then we can do +4 or something, 
+																			if you occupy all 3 on the line then +5000.
+																
+																We could aggregate this by product instead of sum because then emphasis is given to double attacks which is good.
+																
+		To make this easier you would probably want a manually defined line of victory class. You can't use vector crawling because it doesn't consider whether a line is winning possible or not. 
+		To be entirely clear this could just replace your current vector crawl check for win if it works. 
+
+2. Zenith - Balance and optimal. 
+		Implementation: I need a way to brute force solve the game and hard code this into zenith. Current thinking is this. We can easily make a function to generate a set of all coordinates where the piece is 0.
+						We can then find the finite number of ways we can split this set into 4 groups of any arbitrary size. We can then pass these ways into a function where each group maps to an output value 0-> 3. 
+						This would give each element which is free one shot at being everything in combination of others. 
+
+		
+3. Viterex - Reinforcement Learning
