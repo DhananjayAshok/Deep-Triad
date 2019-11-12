@@ -1,14 +1,3 @@
-Hello
-# H1
-## H2 
-
-*italics*
-**bold**
-1. ordered list one 
-2. ordered list two
-
-* unordered list item
----------------------------------------------------------------------------
 # Deep Triad
 #### A 3D Tic Tac Toe AI System
 
@@ -28,6 +17,7 @@ Hello
 
 ### Hyperion the Greedy
 ![Screenshot](Documentation/Hyperion.png)
+
 Hyperion has only one goal. **Attack**. The strategy that Hyperion follows disregards any long term blocking of the opponent and impliments a greedy algorithm to attempt to win the game
 
 Hyperion Algorithm
@@ -54,6 +44,7 @@ This means the algorithm has an efficiency of **O(1)** with respect to the numbe
 
 ### Zenith the Wise
 ![Screenshot](Documentation/Zenith.png)
+
 *Zenith sees all*.The strategy that Zenith follows is to calculate every single possible game that could exist from a particular move and chooses the option that has the most games where Zenith wins
 
 Calculating every possible game
