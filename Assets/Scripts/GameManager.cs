@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -8,21 +9,13 @@ public class GameManager : MonoBehaviour
     public SpawnManager sm;
     public int winner = 0;
 
-    private Stack<int> moveStack;
     private int turn = 0;
-    // Representation of the game pieces. 
-    /*
-     * gameMatrix[layer,row, column]
-     * gameMatrix[0, 0] is the 1st row of the bottom layer
-     * if gameMatrix[0,0,0] = x then if x = 0 its empty else depending on 1,2,3 its filled.
-     */
-    public int[, , ] gameMatrix = new int[3,3,3];
+    public GameMatrix gm;
     // 0 is user, 1 through 3 is Triad.
     public int player1 = 0;
     public int player2 = 0;
-    public int player3 = 0;
+    public int player3 = 0; // Current plan is 2 distinct AI so 1 and 2.
     private int[] players;
-    private WinFinder wf;
     private WinManager wm;
     private AIPlaceManager ai;
 
@@ -31,14 +24,77 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        moveStack = new Stack<int>();
         winner = 0;
-        wf = GetComponent<WinFinder>();
         wm = GetComponent<WinManager>();
         ai = GetComponent<AIPlaceManager>();
-        players = new int[] { player1, player2, player3 };
+        setPlayers(MenuManager.AIPlayers);
+        players = shuffle(player1, player2, player3);
+        gm = new GameMatrix();
     }
 
+    void setPlayers(int no_AI)
+    {
+        if (no_AI == 0)
+        {
+            player1 = 0;
+            player2 = 0;
+            player3 = 0;
+        }
+        else if (no_AI == 1)
+        {
+            player1 = 0;
+            player2 = 0;
+            float r = Random.Range(0.0f, 1.0f);
+            if (r < 0.5) { player3 = 1; } else { player3 = 2; }
+
+        }
+        else if (no_AI == 2) {
+            player1 = 0;
+            float r = Random.Range(0.0f, 1.0f);
+            if (r < 0.5) { player2 = 1; } else { player2 = 2; }
+            r = Random.Range(0.0f, 1.0f);
+            if (r < 0.5) { player3 = 1; } else { player3 = 2; }
+        }
+        else
+        {
+            float r = Random.Range(0.0f, 1.0f);
+            if (r < 0.5) { player1 = 1; } else { player1 = 2; }
+            r = Random.Range(0.0f, 1.0f);
+            if (r < 0.5) { player2 = 1; } else { player2 = 2; }
+            r = Random.Range(0.0f, 1.0f);
+            if (r < 0.5) { player3 = 1; } else { player3 = 2; }
+
+        }
+
+    }
+
+    int[] shuffle(int player1, int player2, int player3) {
+        int[] final = new int[3];
+        bool[] assigned = new bool[] { false, false, false };
+        int r = ((int)(Random.value*10))%3; // Turn of player1
+        final[r] = player1; // The rth entry of final is player1
+        assigned[r] = true;
+        //Debug.Log(("At first r was ", r, " so final[r] is ", final[r]));
+        r = ((int)(Random.value * 10)) % 3; // To be turn of player2
+        while (assigned[r]) { // When r is already assigned.
+            r = ((int)(Random.value * 10)) % 3; // Change r and look for an alternative.
+        }
+        final[r] = player2;
+        assigned[r] = true;
+        //Debug.Log(("After looking 2nd time r was ", r, " so final[r] is ", final[r]));
+        for (int i = 0; i < assigned.Length; i++) {
+            if (!assigned[i]) {
+                final[i] = player3;
+                assigned[i] = true;
+                //Debug.Log(("Finally r was ", i, " so final[r] is ", final[i]));
+                return final;
+            }
+        }
+        return final;
+
+
+
+    }
     int Listener()
     {
         if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -83,85 +139,25 @@ public class GameManager : MonoBehaviour
         }
 
     }        
-    
-    public int[] DecodeMove(int move) {
-        int col = (move-1) % 3; // Without -1 -> 1, 4, 7 would be 1| 2, 5, 8 would be 2| 3, 6, 9 would be 0
-        int row;
-        int layer = 3;
-
-        if (move > 6)
-        {
-            row = 2;
-        }
-        else if (move > 3)
-        {
-            row = 1;
-        }
-        else
-        {
-            row = 0;
-        }
-        if (gameMatrix[0, row, col] == 0)
-        {
-            layer = 0;
-        }
-        else if (gameMatrix[1, row, col] == 0) {
-            layer = 1;
-        }
-        else if (gameMatrix[2, row, col] == 0)
-        {
-            layer = 2;
-        }
-
-        return new int[] { layer, row, col };
-
-    }
+   
     bool canPlay() { 
         return (winner == 0);
     }
     bool isHumanTurn(int playerID)
     {
+        //Debug.Log(("id ", playerID, " and player is ", players[playerID-1]));
         return (players[playerID-1] == 0);
     }
-    bool moveLegal(int move) {
-        if (move < 1 || move > 9) {
-            return false;
-        }
-        int[] decoded = DecodeMove(move);
-        return decoded[0] <= 2;
-    }
-
-    void RegisterMove(int move, int playerID) {
-        moveStack.Push(move);
-        int[] decoded = DecodeMove(move);
-        gameMatrix[decoded[0], decoded[1], decoded[2]] = playerID;
-    }
-    int DeregisterMove() {
-        int move = moveStack.Pop();
-        int[] decoded = DecodeMove(move);
-        if (gameMatrix[2, decoded[1], decoded[2]] != 0)
-        {
-            gameMatrix[2, decoded[1], decoded[2]] = 0;
-        }
-        else if (gameMatrix[1, decoded[1], decoded[2]] != 0)
-        {
-            gameMatrix[1, decoded[1], decoded[2]] = 0;
-        }
-        else {
-            gameMatrix[0, decoded[1], decoded[2]] = 0;
-        }
-        return move;
-    }
-
+    
     // Returns true iff a succesful move was executed
     int HumanMove() {
         int move = Listener();
         return move;
     }
 
-    int AIMove() {
-
-        int move = ai.RandomMove();
+    int AIMove(int playerID) {
+        
+        int move = ai.HandleAIMove(playerID, gm, players[playerID-1]);
 
         return move;
     }
@@ -180,14 +176,15 @@ public class GameManager : MonoBehaviour
                 //Debug.Log("AI check was entered");
                 if (Input.GetKeyDown(KeyCode.Return)) {
                     //Debug.Log("Enter was hit");
-                    move = AIMove(); 
+                    move = AIMove(playerID); 
                 
                 }
             }
-            if (moveLegal(move)) {
+            if (gm.MoveLegal(move)) {
                 sm.SpawnSequence(playerID, move);
-                RegisterMove(move, playerID);
-                winner = wf.CheckForWinner(move);
+                //Debug.Log(gm.calculateAttackScore(move, playerID));
+                gm.RegisterMove(move, playerID);
+                winner = gm.CheckForWin();
                 turn++;
                 int newPlayerID = (turn % 3) + 1;
                 wm.TurnChange(newPlayerID);
@@ -207,18 +204,24 @@ public class GameManager : MonoBehaviour
                 wm.UndoWin();
             }
             winner = 0;
-            int move = DeregisterMove();
+            int move = gm.DeregisterMove();
             sm.DeSpawnSequence(move);
         }
 
     }
     // Update is called once per frame
+
+    public void ExitToMenu() {
+        SceneManager.LoadSceneAsync("Main Menu");
+    }
     void Update()
     {
+        if (Input.GetKey(KeyCode.Escape)) { ExitToMenu(); return;}
+
         if (canPlay()) {
             MakeMove();
         }
-        if (Input.GetKeyDown(KeyCode.Backspace) && moveStack.Count!=0) {
+        if (Input.GetKeyDown(KeyCode.Backspace) && !gm.noMoves()) {
             UnmakeMove();
         }
     }

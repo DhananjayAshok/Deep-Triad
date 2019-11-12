@@ -13,10 +13,51 @@
 
 ]
 
-Win Cases considering new piece at g[x,y,z]
-	x, y, z is corner x 8
-	x, y, z is absolute centre x1
-	x, y, z is bottom and top midrow x 8
+000 is corner or row 1 column 1
+ gameMatrix[layer,row, column]
+ gameMatrix[0, 0] is the 1st row of the bottom layer
+ if gameMatrix[0,0,0] = x then if x = 0 its empty else depending on 1,2,3 its filled.
+ 
+001 is like pressing 2 when theres no base layer
 	
+---------------------------------------------------------------------
+Wins - 8*3 per layer + 9 vertical + 2*4 face slant + 4*2 centre slant and and corner slant  = 45
 
-000 -> 001, 
+000 -> 001
+010 -> 001
+020 -> 001
+000 -> 010
+001 -> 010
+002 -> 010
+000 -> 011
+002 -> 01-1
+
+This three times but with 1 and 2 in first slot of starting point
+
+000 -> 100
+010 -> 100
+020 -> 100
+001 -> 100
+002 -> 100
+011 -> 100
+012 -> 100
+021 -> 100
+022 -> 100
+
+000 -> 110
+020 -> 1-10
+000 -> 101
+002 -> 10-1
+002 -> 110
+022 -> 1-10
+020 -> 101
+022 -> 10-1
+
+000 -> 111
+001 -> 110
+002 -> 1-1-1
+010 -> 101
+012 -> 10-1
+020 -> 1-11
+021 -> 1-10
+022 -> 1-1-1

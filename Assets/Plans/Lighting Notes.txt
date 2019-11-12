@@ -1,2 +1,0 @@
-Lighting notes
-Material brings together a shader a script and its properties like colors and textures etc
