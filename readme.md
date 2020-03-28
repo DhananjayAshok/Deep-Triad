@@ -47,7 +47,7 @@ This means the algorithm has an efficiency of **O(1)** with respect to the numbe
 
 *Zenith sees all*. Zenith follows a more rounded strategy than its Aggressive counterpart. There are 2 primary differences between the two
 1. Zenith uses a different Heuristic Function. One that not just considers the number of attacks it has available to it, but also the number of attacks the other opponents have available to them. 
-2. Instead of taking a greedy approach Zenith uses the power Deep Learning with ML Agents to minimize the Heuristic Function over the course of the game overall.
+2. Instead of taking a greedy approach my plan is to use the power Deep Learning with ML Agents to implement a Q-Deep Learning Algorithm over the game.
 
 
 
